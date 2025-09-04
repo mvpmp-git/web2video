@@ -4,7 +4,7 @@ trap "pkill ffmpeg ; pkill Xorg ; pkill google-chrome ; exit" INT TERM
 # ENV RESOLUTION="1920x1080"
 # ENV FPS="30"
 # ENV OUTPUT_FORMAT="flv"
-WEIGHT=$(echo $RESOLUTION | cut -d'x' -f1)
+WIDTH=$(echo $RESOLUTION | cut -d'x' -f1)
 HEIGHT=$(echo $RESOLUTION | cut -d'x' -f2)
 
 mkdir -p /etc/X11 && cat <<EOF > /etc/X11/xorg.conf
@@ -28,8 +28,8 @@ Section "Screen"
     DefaultDepth 24
     SubSection "Display"
         Depth 24
-        Virtual ${WEIGHT} ${HEIGHT}
-        Modes "${WEIGHT}x${HEIGHT}"
+        Virtual ${WIDTH} ${HEIGHT}
+        Modes "${WIDTH}x${HEIGHT}"
     EndSubSection
 EndSection
 
@@ -52,7 +52,7 @@ google-chrome \
   --no-sandbox \
   --disable-dev-shm-usage \
   --disable-gpu \
-  --window-size=${WEIGHT},${HEIGHT} \
+  --window-size=${WIDTH},${HEIGHT} \
   --start-maximized \
   --kiosk "$URL" \
   --no-first-run \
@@ -75,11 +75,11 @@ while true; do
     echo Starting ffmpeg
     echo -----------------------------------------------------------------------------------------
     echo Full ffmpeg command:
-    echo "ffmpeg -thread_queue_size 1024 -probesize 42M -f x11grab -video_size ${WEIGHT}x${HEIGHT} -i $DISPLAY \
+    echo "ffmpeg -thread_queue_size 1024 -probesize 42M -f x11grab -video_size ${WIDTH}x${HEIGHT} -i $DISPLAY \
     $AUDIO_CONFIG \
     $OUTPUT_CONFIG"
     echo -----------------------------------------------------------------------------------------
-    ffmpeg -thread_queue_size 1024 -probesize 42M -f x11grab -video_size ${WEIGHT}x${HEIGHT} -i $DISPLAY \
+    ffmpeg -thread_queue_size 1024 -probesize 42M -f x11grab -video_size ${WIDTH}x${HEIGHT} -i $DISPLAY \
     $AUDIO_CONFIG \
     $OUTPUT_CONFIG
   echo "FFmpeg exited with status $?. Retrying in 5 seconds..."
