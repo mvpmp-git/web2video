@@ -1,11 +1,11 @@
 #!/bin/bash
 trap "pkill ffmpeg ; pkill Xorg ; pkill google-chrome ; exit" INT TERM
-# ENV URL="tagvs.com"
-# ENV RESOLUTION="1920x1080"
-# ENV FPS="30"
-# ENV OUTPUT_FORMAT="flv"
+
 WIDTH=$(echo $RESOLUTION | cut -d'x' -f1)
 HEIGHT=$(echo $RESOLUTION | cut -d'x' -f2)
+
+[[ -n $DEV_TOOLS_PORT ]] &&
+DEVTOOLS_FLAGS="--remote-debugging-address=127.0.0.1 --remote-debugging-port=${DEV_TOOLS_PORT} --remote-allow-origins=*" || DEVTOOLS_FLAGS=""
 
 mkdir -p /etc/X11 && cat <<EOF > /etc/X11/xorg.conf
 Section "Monitor"
@@ -58,7 +58,9 @@ google-chrome \
   --no-first-run \
   --no-default-browser-check \
   --autoplay-policy=no-user-gesture-required \
-  --disable-infobars &
+  --disable-infobars \
+  --use-fake-ui-for-media-stream \
+  --user-data-dir=/data/ $DEVTOOLS_FLAGS &
 
 # Give Chrome some time to load
 sleep 10

@@ -16,6 +16,7 @@ ENV FPS="29.97"
 ENV DUMMY_AUDIO="false"
 ENV OUTPUT_FORMAT="mpegts"
 ENV OUTPUT_CONFIG=""
+ENV DEV_TOOLS_PORT=""
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
