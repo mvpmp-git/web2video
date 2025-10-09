@@ -66,7 +66,7 @@ google-chrome \
 sleep 10
 
 # Start streaming screen
-if [[ $DUMMY_AUDIO == "true" || OUTPUT_FORMAT == "flv" ]]; then 
+if [[ $DUMMY_AUDIO == "true" || $OUTPUT_FORMAT == "flv" ]]; then 
     AUDIO_CONFIG="-f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100"
 fi
 [[ -z "$OUTPUT_CONFIG" ]] && OUTPUT_CONFIG="-r $FPS -c:v libx264 -pix_fmt yuv420p -preset ultrafast -maxrate 2000k -bufsize 4000k \
@@ -84,6 +84,6 @@ while true; do
     ffmpeg -thread_queue_size 1024 -probesize 42M -f x11grab -video_size ${WIDTH}x${HEIGHT} -i $DISPLAY \
     $AUDIO_CONFIG \
     $OUTPUT_CONFIG
-  echo "FFmpeg exited with status $?. Retrying in 5 seconds..."
+  echo "FFmpeg exited with status $?. Retrying ..."
   sleep 1
 done
