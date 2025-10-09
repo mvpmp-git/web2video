@@ -82,8 +82,8 @@ while true; do
     $OUTPUT_CONFIG"
     echo -----------------------------------------------------------------------------------------
     ffmpeg -thread_queue_size 1024 -probesize 42M -f x11grab -video_size "${WIDTH}x${HEIGHT}" -i "$DISPLAY" \
-    $AUDIO_CONFIG \
-    $OUTPUT_CONFIG
+    "$AUDIO_CONFIG" \
+    "$OUTPUT_CONFIG"
   echo "FFmpeg exited with status $?. Retrying ..."
   sleep 1
 done
