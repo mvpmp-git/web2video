@@ -1,8 +1,8 @@
 #!/bin/bash
 trap "pkill ffmpeg ; pkill Xorg ; pkill google-chrome ; exit" INT TERM
 
-WIDTH=$(echo $RESOLUTION | cut -d'x' -f1)
-HEIGHT=$(echo $RESOLUTION | cut -d'x' -f2)
+WIDTH=$(echo "$RESOLUTION" | cut -d'x' -f1)
+HEIGHT=$(echo "$RESOLUTION" | cut -d'x' -f2)
 
 [[ -n $DEV_TOOLS_PORT ]] &&
 DEVTOOLS_FLAGS="--remote-debugging-address=127.0.0.1 --remote-debugging-port=${DEV_TOOLS_PORT} --remote-allow-origins=*" || DEVTOOLS_FLAGS=""
@@ -52,7 +52,7 @@ google-chrome \
   --no-sandbox \
   --disable-dev-shm-usage \
   --disable-gpu \
-  --window-size=${WIDTH},${HEIGHT} \
+  --window-size="${WIDTH}","${HEIGHT}" \
   --start-maximized \
   --kiosk "$URL" \
   --no-first-run \
@@ -60,7 +60,7 @@ google-chrome \
   --autoplay-policy=no-user-gesture-required \
   --disable-infobars \
   --use-fake-ui-for-media-stream \
-  --user-data-dir=/data/ $DEVTOOLS_FLAGS &
+  --user-data-dir=/data/ "$DEVTOOLS_FLAGS" &
 
 # Give Chrome some time to load
 sleep 10
@@ -81,7 +81,7 @@ while true; do
     $AUDIO_CONFIG \
     $OUTPUT_CONFIG"
     echo -----------------------------------------------------------------------------------------
-    ffmpeg -thread_queue_size 1024 -probesize 42M -f x11grab -video_size ${WIDTH}x${HEIGHT} -i $DISPLAY \
+    ffmpeg -thread_queue_size 1024 -probesize 42M -f x11grab -video_size "${WIDTH}x${HEIGHT}" -i "$DISPLAY" \
     $AUDIO_CONFIG \
     $OUTPUT_CONFIG
   echo "FFmpeg exited with status $?. Retrying ..."
