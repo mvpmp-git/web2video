@@ -81,6 +81,7 @@ while true; do
     $AUDIO_CONFIG \
     $OUTPUT_CONFIG"
     echo -----------------------------------------------------------------------------------------
+    # shellcheck disable=SC2086
     ffmpeg -thread_queue_size 1024 -probesize 42M -f x11grab -video_size "${WIDTH}x${HEIGHT}" -i "$DISPLAY" \
     $AUDIO_CONFIG \
     $OUTPUT_CONFIG
